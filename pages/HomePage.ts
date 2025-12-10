@@ -32,6 +32,10 @@ export class HomePage {
         this.inventoryItem = page.locator('[data-test="inventory-item-name"]')
     }
 
+    async goto() {
+        await this.page.goto("/");
+    }
+
     async logout() {
         await this.burgerButton.click();
         await this.logoutSidebar.click();

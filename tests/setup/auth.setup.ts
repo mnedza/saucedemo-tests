@@ -9,5 +9,5 @@ test('setup auth', async ({ page }) => {
 
   await expect(page).toHaveURL(/inventory.html/);
 
-  await page.context().storageState({ path: 'storageState.json' });
+  await page.context().storageState({ path: './storageState.json' });
 });
