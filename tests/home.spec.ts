@@ -36,3 +36,16 @@ test("check if item is added to cart", async ({page}) => {
     });
 
 });
+
+test("logout from the app", async ({page}) => {
+    const homePage = new HomePage(page);
+    await test.step("Go to main page", async () => {
+        await page.goto('/inventory.html');
+        await expect(page).toHaveURL(/.*inventory\.html/);
+    });
+
+    await test.step("Logout from the app", async () => {
+        await homePage.logout();
+        await expect(page).toHaveURL("/");
+    });
+});
