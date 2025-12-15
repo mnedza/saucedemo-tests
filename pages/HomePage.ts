@@ -1,43 +1,48 @@
 import { Page, Locator } from "@playwright/test";
 
 export class HomePage {
-    readonly page: Page;
-    readonly burgerButton: Locator;
-    readonly menuWrapper: Locator;
-    readonly logoutSidebar: Locator;
+  readonly page: Page;
+  readonly burgerButton: Locator;
+  readonly menuWrapper: Locator;
+  readonly logoutSidebar: Locator;
+  readonly shoppingCartLink: Locator;
 
-    readonly backPackItem: Locator;
-    readonly shoppingCartLink: Locator;
-    readonly checkOut: Locator;
-    readonly firstName: Locator;
-    readonly lastName: Locator;
-    readonly postaLCode: Locator;
-    readonly continueButton: Locator;
-    readonly item4Link: Locator;
-    readonly inventoryItem: Locator;
+  readonly itemsList: Locator;
+  readonly item: Locator;
+  readonly itemImg: Locator;
+  readonly itemName: Locator;
+  readonly itemDesc: Locator;
+  readonly itemPrice: Locator;
+  readonly itemButton: Locator;
+  readonly itemDetailsButton: Locator;
+  readonly backToProductsItem: Locator;
 
-    constructor(page: Page) {
-        this.page = page;
-        this.burgerButton = page.locator("#react-burger-menu-btn");
-        this.menuWrapper = page.locator(".bm-menu-wrap");
-        this.logoutSidebar = page.locator('[data-test="logout-sidebar-link"]');
-        this.backPackItem = page.locator('[data-test="add-to-cart-sauce-labs-backpack"]');
-        this.shoppingCartLink = page.locator('[data-test="shopping-cart-link"]');
-        this.checkOut = page.locator('[data-test="checkout"]');
-        this.firstName = page.locator('[data-test="firstName"]');
-        this.lastName = page.locator('[data-test="lastName"]');
-        this.postaLCode = page.locator('[data-test="postalCode"]');
-        this.continueButton = page.locator('[data-test="continue"]')
-        this.item4Link = page.locator('[data-test="item-4-title-link"]')
-        this.inventoryItem = page.locator('[data-test="inventory-item-name"]')
-    }
+  constructor(page: Page) {
+    this.page = page;
+    this.burgerButton = page.locator("#react-burger-menu-btn");
+    this.menuWrapper = page.locator(".bm-menu-wrap");
+    this.logoutSidebar = page.locator('[data-test="logout-sidebar-link"]');
 
-    async goto() {
-        await this.page.goto("/");
-    }
+    // items - home page
+    this.itemsList = page.locator('[data-test="inventory-list"]');
+    this.item = page.locator('[data-test="inventory-item"]');
+    // this.itemImg = page.locator('inventory-item-img"]');
+    this.itemName = page.locator('[data-test="inventory-item-name"]');
+    this.itemDesc = page.locator('[data-test="inventory-item-desc"]');
+    this.itemPrice = page.locator('[data-test="inventory-item-price"]');
+    // this.itemButton = page.locator("");
 
-    async logout() {
-        await this.burgerButton.click();
-        await this.logoutSidebar.click();
-    }
+    // item details
+    this.itemDetailsButton = page.locator('[data-test="add-to-cart"]');
+    this.backToProductsItem = page.locator('[data-test="back-to-products"]');
+  }
+
+  async goto() {
+    await this.page.goto("/");
+  }
+
+  async logout() {
+    await this.burgerButton.click();
+    await this.logoutSidebar.click();
+  }
 }
