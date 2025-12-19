@@ -16,6 +16,7 @@ export class HomePage {
   readonly itemButton: Locator;
   readonly itemDetailsButton: Locator;
   readonly backToProductsItem: Locator;
+  readonly inventoryContainer: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -26,7 +27,7 @@ export class HomePage {
     // items - home page
     this.itemsList = page.locator('[data-test="inventory-list"]');
     this.item = page.locator('[data-test="inventory-item"]');
-    this.itemButton = page.locator("");
+    this.inventoryContainer = page.locator('[data-test="inventory-container"]');
 
     // item details
     this.itemDetailsButton = page.locator('[data-test="add-to-cart"]');
@@ -51,6 +52,10 @@ export class HomePage {
 
   getItemButton(item: Locator) {
     return item.locator("button", { name: "Add to cart" });
+  }
+
+  getItemInventory(item: Locator) {
+    return item.locator('[data-test="inventory-item"]');
   }
 
   async goto() {
