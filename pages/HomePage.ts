@@ -26,15 +26,31 @@ export class HomePage {
     // items - home page
     this.itemsList = page.locator('[data-test="inventory-list"]');
     this.item = page.locator('[data-test="inventory-item"]');
-    // this.itemImg = page.locator('inventory-item-img"]');
-    this.itemName = page.locator('[data-test="inventory-item-name"]');
-    this.itemDesc = page.locator('[data-test="inventory-item-desc"]');
-    this.itemPrice = page.locator('[data-test="inventory-item-price"]');
-    // this.itemButton = page.locator("");
+    this.itemButton = page.locator("");
 
     // item details
     this.itemDetailsButton = page.locator('[data-test="add-to-cart"]');
     this.backToProductsItem = page.locator('[data-test="back-to-products"]');
+  }
+
+  getItemImg(item: Locator) {
+    return item.locator("img");
+  }
+
+  getItemName(item: Locator) {
+    return item.locator('[data-test="inventory-item-name"]');
+  }
+
+  getItemDesc(item: Locator) {
+    return item.locator('[data-test="inventory-item-desc"]');
+  }
+
+  getItemPrice(item: Locator) {
+    return item.locator('[data-test="inventory-item-price"]');
+  }
+
+  getItemButton(item: Locator) {
+    return item.locator("button", { name: "Add to cart" });
   }
 
   async goto() {
