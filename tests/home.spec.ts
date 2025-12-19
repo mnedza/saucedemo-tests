@@ -7,10 +7,6 @@ test("Check last item details", async ({ page }) => {});
 test("Check all items details", async ({ page }) => {
   const homePage = new HomePage(page);
 
-  await test.step("Items list is visible", async () => {
-    await expect(homePage.itemsList).toBeVisible();
-  });
-
   await test.step("Every item is visible - items list view & every item details", async () => {
     let itemsCount = 0;
 
@@ -18,6 +14,10 @@ test("Check all items details", async ({ page }) => {
       await page.goto("/inventory.html");
       await expect(page).toHaveURL(/.*inventory\.html/);
       itemsCount = await homePage.item.count();
+    });
+
+    await test.step("Items list is visible", async () => {
+      await expect(homePage.itemsList).toBeVisible();
     });
 
     await test.step("Check all items - visible and correct", async () => {});
