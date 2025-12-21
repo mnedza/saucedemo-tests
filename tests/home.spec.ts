@@ -40,23 +40,17 @@ test("Inventory items: list and details views are correct", async ({
       await test.step(`Item ${i + 1} details view is correct`, async () => {
         const details = new InventoryDetailsPage(page);
         await expect(details.inventoryItem).toBeVisible();
-
         await expect(details.inventoryImg).toBeVisible();
-
         await expect(details.inventoryName).toBeVisible();
         await expect(details.inventoryName).not.toHaveText("");
-
         await expect(details.inventoryDesc).toBeVisible();
         await expect(details.inventoryDesc).not.toHaveText("");
-
         await expect(details.inventoryPrice).toBeVisible();
         await expect(details.inventoryPrice).not.toHaveText("");
-
         await expect(details.inventoryAddToCartButton).toBeVisible();
         await expect(details.inventoryAddToCartButton).toHaveText(
           "Add to cart"
         );
-
         await details.detailsBackToProductsButton.click();
       });
     }
