@@ -5,15 +5,10 @@ export class HomePage {
   readonly burgerButton: Locator;
   readonly menuWrapper: Locator;
   readonly logoutSidebar: Locator;
-  readonly shoppingCartLink: Locator;
+//   readonly shoppingCartLink: Locator;
 
   readonly itemsList: Locator;
   readonly item: Locator;
-  readonly itemImg: Locator;
-  readonly itemName: Locator;
-  readonly itemDesc: Locator;
-  readonly itemPrice: Locator;
-  readonly itemButton: Locator;
   readonly itemDetailsButton: Locator;
   readonly backToProductsItem: Locator;
   readonly inventoryContainer: Locator;
