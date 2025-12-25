@@ -1,12 +1,10 @@
 import { Page, Locator } from "@playwright/test";
 
-export class HomePage {
+export class InventoryPage {
   readonly page: Page;
   readonly burgerButton: Locator;
   readonly menuWrapper: Locator;
   readonly logoutSidebar: Locator;
-//   readonly shoppingCartLink: Locator;
-
   readonly itemsList: Locator;
   readonly item: Locator;
   readonly itemDetailsButton: Locator;
@@ -18,13 +16,9 @@ export class HomePage {
     this.burgerButton = page.locator("#react-burger-menu-btn");
     this.menuWrapper = page.locator(".bm-menu-wrap");
     this.logoutSidebar = page.locator('[data-test="logout-sidebar-link"]');
-
-    // items - home page
     this.itemsList = page.locator('[data-test="inventory-list"]');
     this.item = page.locator('[data-test="inventory-item"]');
     this.inventoryContainer = page.locator('[data-test="inventory-container"]');
-
-    // item details
     this.itemDetailsButton = page.locator('[data-test="add-to-cart"]');
     this.backToProductsItem = page.locator('[data-test="back-to-products"]');
   }
@@ -46,7 +40,7 @@ export class HomePage {
   }
 
   getItemButton(item: Locator) {
-    return item.locator("button", { name: "Add to cart" });
+    return item.locator("button", { hasText: "Add to cart" });
   }
 
   getItemInventory(item: Locator) {

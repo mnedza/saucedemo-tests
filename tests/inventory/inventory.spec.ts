@@ -1,26 +1,26 @@
 import { test, expect } from "@playwright/test";
-import { HomePage } from "../pages/HomePage";
-import { InventoryDetailsPage } from "../pages/InventoryDetailsPage";
+import { InventoryPage } from "../../pages/InventoryPage";
+import { InventoryDetailsPage } from "../../pages/InventoryDetailsPage";
 
 test("User can view all products and their details", async ({ page }) => {
-  const homePage = new HomePage(page);
+  const inventoryPage = new InventoryPage(page);
 
   let itemsCount = 0;
   await page.goto("/inventory.html");
   await expect(page).toHaveURL(/.*inventory\.html/);
-  itemsCount = await homePage.item.count();
-  await expect(homePage.itemsList).toBeVisible();
+  itemsCount = await inventoryPage.item.count();
+  await expect(inventoryPage.itemsList).toBeVisible();
 
   for (let i = 0; i < itemsCount; i++) {
     await test.step(`Item ${i + 1} list view is correct`, async () => {
-      const item = homePage.item.nth(i);
-      const itemImg = homePage.getItemImg(item);
-      const itemName = homePage.getItemName(item);
-      const itemDesc = homePage.getItemDesc(item);
-      const itemPrice = homePage.getItemPrice(item);
-      const itemButton = homePage.getItemButton(item);
+      const item = inventoryPage.item.nth(i);
+      const itemImg = inventoryPage.getItemImg(item);
+      const itemName = inventoryPage.getItemName(item);
+      const itemDesc = inventoryPage.getItemDesc(item);
+      const itemPrice = inventoryPage.getItemPrice(item);
+      const itemButton = inventoryPage.getItemButton(item);
 
-      await expect(homePage.item.nth(i)).toBeVisible();
+      await expect(inventoryPage.item.nth(i)).toBeVisible();
       await expect(itemImg).toBeVisible();
       await expect(itemName).toBeVisible();
       await expect(itemName).not.toHaveText("");
