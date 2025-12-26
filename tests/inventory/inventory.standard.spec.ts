@@ -49,3 +49,4 @@ test("User can view all products and their details", async ({ page }) => {
     });
   }
 });
+

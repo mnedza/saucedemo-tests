@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { LoginPage } from "../../pages/LoginPage";
 
-test("setup auth", async ({ page }) => {
+test("Setup auth - standard user", async ({ page }) => {
   const login = new LoginPage(page);
   await login.goto();
   await login.login("standard_user", "secret_sauce");

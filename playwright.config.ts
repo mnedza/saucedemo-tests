@@ -27,5 +27,12 @@ export default defineConfig({
       },
       dependencies: ["auth"],
     },
+    {
+      name: "login-tests",
+      testMatch: /.*user\.login\.ts/,
+      use: {
+        ...devices["Desktop Chrome"],
+      },
+    },
   ],
 });
