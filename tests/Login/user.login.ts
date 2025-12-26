@@ -19,3 +19,14 @@ test.describe("Invalid credentials", () => {
     );
   });
 });
+
+test.describe("Locked out user", () => {
+  test("User cannot log in and sees error message", async ({ page }) => {
+    const login = new LoginPage(page);
+    attemptLogin(page, "locked_out_user", "secret_sauce");
+    await expect(page).not.toHaveURL(/inventory.html/);
+    await expect(login.expectedError).toHaveText(
+      "Epic sadface: Sorry, this user has been locked out."
+    );
+  });
+});
