@@ -10,6 +10,7 @@ export class InventoryPage {
   readonly itemDetailsButton: Locator;
   readonly backToProductsItem: Locator;
   readonly inventoryContainer: Locator;
+  readonly selectSortOption: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -21,6 +22,9 @@ export class InventoryPage {
     this.inventoryContainer = page.locator('[data-test="inventory-container"]');
     this.itemDetailsButton = page.locator('[data-test="add-to-cart"]');
     this.backToProductsItem = page.locator('[data-test="back-to-products"]');
+    this.selectSortOption = page.locator(
+      '[data-test="product-sort-container"]'
+    );
   }
 
   getItemImg(item: Locator) {

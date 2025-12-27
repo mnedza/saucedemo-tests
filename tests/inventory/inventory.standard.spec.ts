@@ -50,3 +50,78 @@ test("User can view all products and their details", async ({ page }) => {
   }
 });
 
+test("User can sort products and see correctly sorted list", async ({
+  page,
+}) => {
+  const sortOptions = [
+    { label: "Name (A to Z)", value: "az" },
+    { label: "Name (Z to A)", value: "za" },
+    { label: "Price (low to high)", value: "lohi" },
+    { label: "Price (high to low)", value: "hilo" },
+  ];
+  const inventoryPage = new InventoryPage(page);
+
+  let sortedItemsAZ = [];
+  let sortedItemsZA = [];
+  let sortedItemsLOHI = [];
+  let sortedItemsHILO = [];
+  let itemsCount = 0;
+
+  await page.goto("/inventory.html");
+  await expect(page).toHaveURL(/.*inventory\.html/);
+  itemsCount = await inventoryPage.item.count();
+  await expect(inventoryPage.itemsList).toBeVisible();
+  for (const option of sortOptions) {
+    await test.step(`Sort by "${option.label}"`, async () => {
+      await inventoryPage.selectSortOption.selectOption({
+        value: option.value,
+      });
+      const selectedSortOption =
+        await inventoryPage.selectSortOption.inputValue();
+
+      let actualItems = [];
+
+      for (let i = 0; i < itemsCount; i++) {
+        let item = inventoryPage.item.nth(i);
+        let itemNameValue = await inventoryPage.getItemName(item).textContent();
+        let itemPriceValue = Number(
+          (await inventoryPage.getItemPrice(item).textContent())!.replace(
+            "$",
+            ""
+          )
+        );
+        actualItems.push({
+          itemName: itemNameValue,
+          itemPrice: itemPriceValue,
+        });
+      }
+      sortedItemsAZ = actualItems
+        .slice()
+        .sort((a, b) => a.itemName!.localeCompare(b.itemName!));
+      sortedItemsZA = actualItems
+        .slice()
+        .sort((a, b) => b.itemName!.localeCompare(a.itemName!));
+      sortedItemsLOHI = actualItems
+        .slice()
+        .sort((a, b) => a.itemPrice - b.itemPrice);
+      sortedItemsHILO = actualItems
+        .slice()
+        .sort((a, b) => b.itemPrice - a.itemPrice);
+
+      switch (selectedSortOption) {
+        case "az":
+          expect(actualItems).toEqual(sortedItemsAZ);
+          break;
+        case "za":
+          expect(actualItems).toEqual(sortedItemsZA);
+          break;
+        case "lohi":
+          expect(actualItems).toEqual(sortedItemsLOHI);
+          break;
+        case "hilo":
+          expect(actualItems).toEqual(sortedItemsHILO);
+          break;
+      }
+    });
+  }
+});
