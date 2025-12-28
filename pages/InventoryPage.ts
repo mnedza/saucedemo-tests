@@ -11,6 +11,8 @@ export class InventoryPage {
   readonly backToProductsItem: Locator;
   readonly inventoryContainer: Locator;
   readonly selectSortOption: Locator;
+  readonly shoopingCartLink: Locator;
+  readonly shoopingCartBadge: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -25,6 +27,10 @@ export class InventoryPage {
     this.selectSortOption = page.locator(
       '[data-test="product-sort-container"]'
     );
+
+    // cart icon
+    this.shoopingCartLink = page.locator('[data-test="shopping-cart-link"]');
+    this.shoopingCartBadge = page.locator('[data-test="shopping-cart-badge"]');
   }
 
   getItemImg(item: Locator) {
@@ -47,6 +53,10 @@ export class InventoryPage {
     return item.locator("button", { hasText: "Add to cart" });
   }
 
+  getIRemovetemButton(item: Locator) {
+    return item.locator("button", { hasText: "Remove" });
+  }
+
   getItemInventory(item: Locator) {
     return item.locator('[data-test="inventory-item"]');
   }
@@ -58,5 +68,9 @@ export class InventoryPage {
   async logout() {
     await this.burgerButton.click();
     await this.logoutSidebar.click();
+  }
+
+  async gotoCart() {
+    await this.shoopingCartLink.click();
   }
 }
