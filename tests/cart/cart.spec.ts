@@ -51,7 +51,7 @@ test.only("User can add all items to cart and see them correctly", async ({
   for (let i = 0; i < itemsCount; i++) {
     await test.step(`User can press Item ${
       i + 1
-    } 'add to cart' button`, async () => {
+    } 'add to cart' button in Inventory Page`, async () => {
       itemButtonCount = itemButtonCount + 1;
       let item = inventoryPage.item.nth(i);
       let itemButton = inventoryPage.getItemButton(item);
@@ -59,8 +59,21 @@ test.only("User can add all items to cart and see them correctly", async ({
     });
   }
 
+  let shoppingCartBadge;
   await test.step("User can see that items added to cart count is equal to cartBadge Number", async () => {
-    const shoppingCartBadge = await inventoryPage.shoopingCartBadge.innerText();
+    shoppingCartBadge = await inventoryPage.shoopingCartBadge.innerText();
     expect(Number(shoppingCartBadge)).toEqual(itemButtonCount);
   });
+
+  await inventoryPage.gotoCart();
+  const cartPage = new CartPage(page);
+  const itemsCountInCartPage = await cartPage.cartItem.count();
+  expect(itemsCountInCartPage).toBe(itemsCount);
+
+  for (let i = 0; i < itemsCountInCartPage; i++) {
+    await test.step(`User can see Item ${i + 1} in Cart Page`, async () => {
+      const cartItem = cartPage.cartItem.nth(i);
+      await expect(cartItem).toBeVisible();
+    });
+  }
 });

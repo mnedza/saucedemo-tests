@@ -8,7 +8,7 @@ export class CartPage {
   constructor(page: Page) {
     this.page = page;
     this.cartList = page.locator(".cart_list");
-    this.cartItem = page.locator(".cart_item");
+    this.cartItem = page.locator('[data-test="inventory-item"]');
   }
   getItemName(item: Locator): Locator {
     return item.locator(".inventory_item_name");
