@@ -35,6 +35,32 @@ test("User can add first product to cart and see it correctly", async ({
   await expect(firstCartItemName).toHaveText(firstInventoryItemName!);
 });
 
-test("User can add all items to cart and see them correctly", async ({
+test.only("User can add all items to cart and see them correctly", async ({
   page,
-}) => {});
+}) => {
+  const inventoryPage = new InventoryPage(page);
+  await page.goto("/inventory.html");
+  await expect(page).toHaveURL(/.*inventory\.html/);
+
+  await expect(inventoryPage.itemsList).toBeVisible();
+  let itemsCount = 0;
+  let itemButtonCount = 0;
+  itemsCount = await inventoryPage.item.count();
+  expect(itemsCount > 0);
+
+  for (let i = 0; i < itemsCount; i++) {
+    await test.step(`User can press Item ${
+      i + 1
+    } 'add to cart' button`, async () => {
+      itemButtonCount = itemButtonCount + 1;
+      let item = inventoryPage.item.nth(i);
+      let itemButton = inventoryPage.getItemButton(item);
+      await itemButton.click();
+    });
+  }
+
+  await test.step("User can see that items added to cart count is equal to cartBadge Number", async () => {
+    const shoppingCartBadge = await inventoryPage.shoopingCartBadge.innerText();
+    expect(Number(shoppingCartBadge)).toEqual(itemButtonCount);
+  });
+});
