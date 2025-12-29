@@ -35,7 +35,7 @@ test("User can add first product to cart and see it correctly", async ({
   await expect(firstCartItemName).toHaveText(firstInventoryItemName!);
 });
 
-test.only("User can add all items to cart and see them correctly", async ({
+test("User can add all items to cart and see them correctly", async ({
   page,
 }) => {
   const inventoryPage = new InventoryPage(page);
