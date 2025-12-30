@@ -77,3 +77,5 @@ test("User can add all items to cart and see them correctly", async ({
     });
   }
 });
+
+test("User can remove product from cart", async ({ page }) => {});
