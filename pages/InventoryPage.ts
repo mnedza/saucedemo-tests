@@ -1,4 +1,5 @@
 import { Page, Locator } from "@playwright/test";
+import { InventoryItem } from "../types/InventoryItem";
 
 export class InventoryPage {
   readonly page: Page;
@@ -74,10 +75,22 @@ export class InventoryPage {
     await this.shoopingCartLink.click();
   }
 
-  async countAllProducts(inventoryItem: Locator) {
-    let allProducts = await inventoryItem.count();
-    return Number(allProducts);
-  }
+  async readActualItems(itemsCount: number): Promise<InventoryItem[]> {
+    let items: InventoryItem[] = [];
 
-  async sortAllProducts() {}
+    for (let i = 0; i < itemsCount; i++) {
+      let item = this.item.nth(i);
+      const itemName = await this.getItemName(item).textContent();
+      if (itemName === null) {
+        throw new Error("Item name is null");
+      }
+
+      let itemPrice = Number(
+        (await this.getItemPrice(item).textContent())!.replace("$", "")
+      );
+      items.push({ itemName, itemPrice });
+    }
+
+    return items;
+  }
 }
