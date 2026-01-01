@@ -73,4 +73,11 @@ export class InventoryPage {
   async gotoCart() {
     await this.shoopingCartLink.click();
   }
+
+  async countAllProducts(inventoryItem: Locator) {
+    let allProducts = await inventoryItem.count();
+    return Number(allProducts);
+  }
+
+  async sortAllProducts() {}
 }

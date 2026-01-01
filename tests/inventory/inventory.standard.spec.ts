@@ -69,7 +69,9 @@ test("User can sort products and see correctly sorted list", async ({
 
   await page.goto("/inventory.html");
   await expect(page).toHaveURL(/.*inventory\.html/);
-  itemsCount = await inventoryPage.item.count();
+
+  itemsCount = await inventoryPage.countAllProducts(inventoryPage.item);
+
   await expect(inventoryPage.itemsList).toBeVisible();
   for (const option of sortOptions) {
     await test.step(`Sort by "${option.label}"`, async () => {
