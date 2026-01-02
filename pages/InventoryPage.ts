@@ -62,8 +62,9 @@ export class InventoryPage {
     return item.locator('[data-test="inventory-item"]');
   }
 
-  async goto() {
-    await this.page.goto("/");
+  async open() {
+    await this.page.goto("/inventory.html");
+    await expect(this.itemsList).toBeVisible();
   }
 
   async logout() {
@@ -71,7 +72,7 @@ export class InventoryPage {
     await this.logoutSidebar.click();
   }
 
-  async gotoCart() {
+  async goToCart() {
     await this.shoopingCartLink.click();
   }
 
@@ -105,5 +106,35 @@ export class InventoryPage {
     await expect(this.getItemPrice(item)).not.toHaveText("");
     await expect(this.getItemButton(item)).toBeVisible();
     await expect(this.getItemButton(item)).toHaveText("Add to cart");
+  }
+
+  async addFirstItemToCart(): Promise<string> {
+    const firstItem = this.item.first();
+    const itemName = await this.getItemName(firstItem).innerText();
+
+    await this.getItemButton(firstItem).click();
+    await expect(this.getIRemovetemButton(firstItem)).toBeVisible();
+
+    return itemName;
+  }
+
+  async addAllItemsToCart(): Promise<number> {
+    const itemsCount = await this.item.count();
+
+    for (let i = 0; i < itemsCount; i++) {
+      const item = this.item.nth(i);
+      await this.getItemButton(item).click();
+      await expect(this.getIRemovetemButton(item)).toBeVisible();
+    }
+
+    return itemsCount;
+  }
+
+  async expectCartBadgeCount(expected: number) {
+    if (expected === 0) {
+      await expect(this.shoopingCartBadge).toHaveCount(0);
+    } else {
+      await expect(this.shoopingCartBadge).toHaveText(String(expected));
+    }
   }
 }
