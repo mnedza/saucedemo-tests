@@ -1,4 +1,4 @@
-import { Page, Locator } from "@playwright/test";
+import { Page, Locator, expect } from "@playwright/test";
 
 export class InventoryDetailsPage {
   readonly page: Page;
@@ -25,5 +25,18 @@ export class InventoryDetailsPage {
 
   async goto(itemName: Locator) {
     await itemName.click();
+  }
+
+  async expectDetailsAreCorrect() {
+    await expect(this.inventoryItem).toBeVisible();
+    await expect(this.inventoryImg).toBeVisible();
+    await expect(this.inventoryName).toBeVisible();
+    await expect(this.inventoryName).not.toHaveText("");
+    await expect(this.inventoryDesc).toBeVisible();
+    await expect(this.inventoryDesc).not.toHaveText("");
+    await expect(this.inventoryPrice).toBeVisible();
+    await expect(this.inventoryPrice).not.toHaveText("");
+    await expect(this.inventoryAddToCartButton).toBeVisible();
+    await expect(this.inventoryAddToCartButton).toHaveText("Add to cart");
   }
 }

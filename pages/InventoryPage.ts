@@ -1,4 +1,4 @@
-import { Page, Locator } from "@playwright/test";
+import { Page, Locator, expect } from "@playwright/test";
 import { InventoryItem } from "../types/InventoryItem";
 
 export class InventoryPage {
@@ -92,5 +92,18 @@ export class InventoryPage {
     }
 
     return items;
+  }
+
+  async expectItemInListIsCorrect(item: Locator) {
+    await expect(item).toBeVisible();
+    await expect(this.getItemImg(item)).toBeVisible();
+    await expect(this.getItemName(item)).toBeVisible();
+    await expect(this.getItemName(item)).not.toHaveText("");
+    await expect(this.getItemDesc(item)).toBeVisible();
+    await expect(this.getItemDesc(item)).not.toHaveText("");
+    await expect(this.getItemPrice(item)).toBeVisible();
+    await expect(this.getItemPrice(item)).not.toHaveText("");
+    await expect(this.getItemButton(item)).toBeVisible();
+    await expect(this.getItemButton(item)).toHaveText("Add to cart");
   }
 }
