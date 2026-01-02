@@ -3,7 +3,42 @@ import { InventoryPage } from "../../pages/InventoryPage";
 import { InventoryDetailsPage } from "../../pages/InventoryDetailsPage";
 import { sortingCases } from "../../utils/sortingProducts";
 
-test("User can view all products and their details", async ({ page }) => {
+test("User can view first product and its details and go back to inventory page", async ({
+  page,
+}) => {
+  const inventoryPage = new InventoryPage(page);
+
+  await page.goto("/inventory.html");
+  await expect(page).toHaveURL(/.*inventory\.html/);
+  await expect(inventoryPage.itemsList).toBeVisible();
+
+  const firstItem = inventoryPage.item.first();
+  const firstItemName = inventoryPage.getItemName(firstItem);
+
+  await expect(firstItem).toBeVisible();
+  await expect(firstItemName).toBeVisible();
+  await firstItemName.click();
+
+  const details = new InventoryDetailsPage(page);
+
+  await expect(details.inventoryItem).toBeVisible();
+  await expect(details.inventoryImg).toBeVisible();
+  await expect(details.inventoryName).toBeVisible();
+  await expect(details.inventoryName).not.toHaveText("");
+  await expect(details.inventoryDesc).toBeVisible();
+  await expect(details.inventoryDesc).not.toHaveText("");
+  await expect(details.inventoryPrice).toBeVisible();
+  await expect(details.inventoryPrice).not.toHaveText("");
+  await expect(details.inventoryAddToCartButton).toBeVisible();
+  await expect(details.inventoryAddToCartButton).toHaveText("Add to cart");
+
+  await details.detailsBackToProductsButton.click();
+  await expect(page).toHaveURL(/.*inventory\.html/);
+});
+
+test("User can view all products and their details and go back to inventory page", async ({
+  page,
+}) => {
   const inventoryPage = new InventoryPage(page);
 
   let itemsCount = 0;
