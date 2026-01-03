@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { InventoryPage } from "../../pages/InventoryPage";
 import { CartPage } from "../../pages/CartPage";
+import { CheckoutPage } from "../../pages/CheckoutPage";
 
 test("User can add first product to cart and see it correctly", async ({
   page,
@@ -82,4 +83,69 @@ test("User can remove product from cart", async ({ page }) => {
 
   await cartPage.removeFirstItem();
   await cartPage.expectItemsCount(0);
+});
+
+test("User can complete checkout flow with one product", async ({ page }) => {
+  const inventoryPage = new InventoryPage(page);
+  const cartPage = new CartPage(page);
+  const checkoutPage = new CheckoutPage(page);
+
+  await inventoryPage.open();
+
+  const itemName = await inventoryPage.addFirstItemToCart();
+  await inventoryPage.expectCartBadgeCount(1);
+
+  await inventoryPage.goToCart();
+  await cartPage.expectItemWithNameIsVisible(itemName);
+
+  await cartPage.goToCheckoutStepOne();
+
+  await checkoutPage.fillUserDataAndContinue({
+    firstName: "Marcel",
+    lastName: "Nędza",
+    postalCode: "44-444",
+  });
+
+  await checkoutPage.expectItemListVisible();
+  await checkoutPage.expectItemWithName(itemName);
+
+  const { itemTotal, tax, total } = await checkoutPage.readSummaryValues();
+
+  expect(tax).toBeCloseTo(itemTotal * 0.08, 2);
+  expect(total).toBeCloseTo(itemTotal + tax, 2);
+
+  await checkoutPage.finishCheckout();
+  await checkoutPage.expectCheckoutComplete();
+});
+
+test("User can complete checkout flow with all products", async ({ page }) => {
+  const inventoryPage = new InventoryPage(page);
+  const cartPage = new CartPage(page);
+  const checkoutPage = new CheckoutPage(page);
+
+  await inventoryPage.open();
+
+  const itemsCount = await inventoryPage.addAllItemsToCart();
+  await inventoryPage.expectCartBadgeCount(itemsCount);
+
+  await inventoryPage.goToCart();
+  await cartPage.expectItemsCount(itemsCount);
+
+  await cartPage.goToCheckoutStepOne();
+
+  await checkoutPage.fillUserDataAndContinue({
+    firstName: "Marcel",
+    lastName: "Nędza",
+    postalCode: "44-444",
+  });
+
+  await checkoutPage.expectItemListVisible();
+  const { itemTotal, tax, total } = await checkoutPage.readSummaryValues();
+
+  expect(itemTotal).toBeGreaterThan(0);
+  expect(tax).toBeCloseTo(itemTotal * 0.08, 2);
+  expect(total).toBeCloseTo(itemTotal + tax, 2);
+  await checkoutPage.expectItemsCount(itemsCount);
+  await checkoutPage.finishCheckout();
+  await checkoutPage.expectCheckoutComplete();
 });
