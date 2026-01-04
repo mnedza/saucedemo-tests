@@ -1,4 +1,4 @@
-# 🧪 SauceDemo - UI Tests
+# 🧪 SauceDemo - E2E Tests
 
 Automated UI tests for the [SauceDemo](https://www.saucedemo.com) application written in **Playwright** using **TypeScript** and **Page Object Model**.
 
