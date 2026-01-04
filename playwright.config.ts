@@ -19,13 +19,22 @@ export default defineConfig({
       testMatch: /.*auth\.setup\.ts/,
     },
     {
-      name: "chromium",
+      name: "standard_user",
       testMatch: /.*\.spec\.ts/,
+      dependencies: ["auth"],
       use: {
         ...devices["Desktop Chrome"],
-        storageState: "./storageState.json",
+        storageState: "storage/standard_user.json",
       },
+    },
+    {
+      name: "problem_user",
+      testMatch: /.*\.spec\.ts/,
       dependencies: ["auth"],
+      use: {
+        ...devices["Desktop Chrome"],
+        storageState: "storage/problem_user.json",
+      },
     },
     {
       name: "login-tests",
